@@ -1,0 +1,70 @@
+[
+    {
+        "id": "949671b2a2173441",
+        "type": "tab",
+        "label": "Backup",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5ea86b8ecf11c117",
+        "type": "debug",
+        "z": "949671b2a2173441",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "378394474e9f38f4",
+        "type": "file",
+        "z": "949671b2a2173441",
+        "name": "",
+        "filename": "/alexpipe",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 320,
+        "y": 60,
+        "wires": [
+            [
+                "5ea86b8ecf11c117"
+            ]
+        ]
+    },
+    {
+        "id": "1e7be573e003524e",
+        "type": "inject",
+        "z": "949671b2a2173441",
+        "name": "backup",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "/alex/scripts/nodered.backup.sh",
+        "payloadType": "str",
+        "x": 130,
+        "y": 60,
+        "wires": [
+            [
+                "378394474e9f38f4"
+            ]
+        ]
+    }
+]

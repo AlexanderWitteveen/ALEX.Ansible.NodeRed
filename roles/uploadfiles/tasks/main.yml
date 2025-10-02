@@ -1,0 +1,26 @@
+---
+
+- name: Upload files
+  ansible.builtin.template:
+    src: "{{ item.source }}"
+    dest: "{{ item.target }}"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0777'
+  loop:
+    - source: nodered.yml.j2
+      target: "/{{ prop_basename }}/docker/nodered.yml"
+    - source: nodered.backup.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.backup.sh"
+    - source: nodered.restore.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.restore.sh"
+    - source: nodered.init.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.init.sh"
+    - source: settings.js.j2
+      target: "/{{ prop_basename }}/nodered/defaults/settings.js"
+    - source: flows.json.j2
+      target: "/{{ prop_basename }}/nodered/defaults/flows.json"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

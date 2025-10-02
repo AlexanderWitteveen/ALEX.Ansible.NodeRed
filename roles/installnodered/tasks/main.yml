@@ -1,0 +1,43 @@
+---
+
+- name: Install WOL
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - wakeonlan
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role: # create datafolders
+    name: alex.debian13.datafolders
+  vars:
+    args_datafolder_local: 
+      - name: nodered/data
+      - name: nodered/defaults
+    args_datafolder_remote:
+      - name: data
+        service: nodered
+        mount: data-{{ prop_environment }}
+
+- ansible.builtin.include_role: # upload files
+    name: alex.nodered.uploadfiles
+
+- ansible.builtin.include_role: # create bashpipe
+    name: alex.debian13.bashpipe
+
+- ansible.builtin.include_role: # docker compose
+    name: alex.debian13.dockercompose
+  vars:
+    args_run_scripts:
+      - /{{ prop_basename }}/scripts/nodered.restore.sh
+      - /{{ prop_basename }}/scripts/nodered.init.sh
+    args_docker_images:
+      - file: nodered/nodered.4.1.0-22.base.tar
+    args_compose_file: "/{{ prop_basename }}/docker/nodered.yml"
+
+
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Remove current Node-RED data directory contents
+if [ -n "$(ls -A /{{ prop_basename}}/nodered/data)" ]; then
+    rm -r -f /{{ prop_basename}}/nodered/data/*
+fi
+
+# Restore latest backup of Node-RED data directory
+if [ -n "$(ls -A /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup)" ]; then
+    ls -tr /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup | tail -n 1 | xargs -I {} unzip -o /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup/{} -d /
+fi

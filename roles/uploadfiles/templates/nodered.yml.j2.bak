@@ -1,0 +1,27 @@
+name: nodered
+
+services:
+  nodered:
+    image: alex/nodered:base
+    pull_policy: never
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "1880:1880"
+    networks:
+      - nodered-net
+    volumes:
+      - type: bind
+        source: /{{ prop_basename }}/nodered/data
+        target: /data
+      - type: bind
+        source: /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup
+        target: /backup
+      - type: bind
+        source: /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe
+        target: /{{ prop_basename }}pipe
+    restart: unless-stopped
+
+networks:
+  nodered-net:
+
