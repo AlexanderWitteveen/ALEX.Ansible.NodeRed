@@ -15,7 +15,7 @@ services:
         source: /{{ prop_basename }}/nodered/data
         target: /data
       - type: bind
-        source: /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup
+        source: /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup
         target: /backup
       - type: bind
         source: /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe

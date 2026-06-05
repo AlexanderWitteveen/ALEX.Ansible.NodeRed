@@ -2,15 +2,15 @@
 
 # Create backup of Node-RED data directory
 if [ -n "$(ls -A /{{ prop_basename}}/nodered/data)" ]; then
-    zip -r /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup/nodered-backup-$(date +%Y%m%d%H%M%S).zip /{{ prop_basename}}/nodered/data/*
+    zip -r /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup/nodered-backup-$(date +%Y%m%d%H%M%S).zip /{{ prop_basename}}/nodered/data/*
 fi
 
 # Keep only last 5 backups
 max=5
-count=$( ls -t /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup | wc -l )
+count=$( ls -t /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup | wc -l )
 remove=$(( count - max ))
 if [ $count -gt $max ]; then
-    for file in $( ls -t /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup | tail -n $remove ); do
-        rm -f /mnt/data-{{ prop_environment }}/nodered/{{ prop_hostname }}/backup/$file
+    for file in $( ls -t /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup | tail -n $remove ); do
+        rm -f /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup/$file
     done
 fi

@@ -22,5 +22,5 @@
       target: "/{{ prop_basename }}/nodered/defaults/flows.json"
   vars:
     ansible_connection: ssh
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true

@@ -9,7 +9,7 @@
     packages:
     - wakeonlan
     ansible_connection: ssh
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - ansible.builtin.include_role: # create datafolders
@@ -21,7 +21,7 @@
     args_datafolder_remote:
       - name: data
         service: nodered
-        mount: data-{{ prop_environment }}
+        mount: data-{{ prop_cmdb.environment }}
 
 - ansible.builtin.include_role: # upload files
     name: alex.nodered.uploadfiles
