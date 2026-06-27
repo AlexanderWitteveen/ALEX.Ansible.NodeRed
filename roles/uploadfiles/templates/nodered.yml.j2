@@ -2,7 +2,8 @@ name: nodered
 
 services:
   nodered:
-    image: alex/nodered:base
+    image: alex/nodered:custom
+    user: root:root
     pull_policy: never
     environment:
       - TZ=Europe/Amsterdam
@@ -16,7 +17,10 @@ services:
         source: /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup
         target: /backup
       - type: bind
-        source: /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe
-        target: /{{ prop_basename }}pipe
+        source: /{{ prop_basename }}
+        target: /alex
+      - type: bind
+        source: /mnt
+        target: /mnt
     restart: unless-stopped
 

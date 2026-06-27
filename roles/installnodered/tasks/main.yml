@@ -36,7 +36,7 @@
       - /{{ prop_basename }}/scripts/nodered.restore.sh
       - /{{ prop_basename }}/scripts/nodered.init.sh
     args_docker_images:
-      - file: nodered/nodered.4.1.0-22.base.tar
+      - file: nodered/nodered.5.0.0-debian.custom.tar
     args_compose_file: "/{{ prop_basename }}/docker/nodered.yml"
 
 
