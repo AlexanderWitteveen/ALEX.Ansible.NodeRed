@@ -17,8 +17,11 @@ services:
         source: /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup
         target: /backup
       - type: bind
-        source: /{{ prop_basename }}
-        target: /alex
+        source: /{{ prop_basename }}/nodered
+        target: /{{ prop_basename }}/nodered
+      - type: bind
+        source: /{{ prop_basename }}/scripts
+        target: /{{ prop_basename }}/scripts
       - type: bind
         source: /mnt
         target: /mnt
