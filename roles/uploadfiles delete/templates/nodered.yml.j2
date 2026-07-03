@@ -1,0 +1,33 @@
+name: nodered
+
+services:
+  nodered:
+    image: alex/nodered:custom
+    user: root:root
+    pull_policy: never
+    environment:
+      - TZ=Europe/Amsterdam
+    network_mode: host
+    # ports:
+    #   - "1880:1880"
+    volumes:
+      - type: bind
+        source: /{{ prop_basename }}/nodered/data
+        target: /data
+      - type: bind
+        source: /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup
+        target: /backup
+      - type: bind
+        source: /{{ prop_basename }}/nodered
+        target: /{{ prop_basename }}/nodered
+      - type: bind
+        source: /{{ prop_basename }}/cmdb
+        target: /{{ prop_basename }}/cmdb
+      - type: bind
+        source: /{{ prop_basename }}/scripts
+        target: /{{ prop_basename }}/scripts
+      - type: bind
+        source: /mnt
+        target: /mnt
+    restart: unless-stopped
+

@@ -20,6 +20,10 @@
       target: "/{{ prop_basename }}/nodered/defaults/settings.js"
     - source: flows.json.j2
       target: "/{{ prop_basename }}/nodered/defaults/flows.json"
+    - source: .config.runtime.json.j2
+      target: "/{{ prop_basename }}/nodered/defaults/.config.runtime.json"
+    - source: .config.users.json.j2
+      target: "/{{ prop_basename }}/nodered/defaults/.config.users.json"
   vars:
     ansible_connection: ssh
     ansible_host: "{{ prop_host.ipaddress }}"

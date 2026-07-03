@@ -23,11 +23,34 @@
         service: nodered
         mount: data-{{ prop_cmdb.environment }}
 
-- ansible.builtin.include_role: # upload files
-    name: alex.nodered.uploadfiles
-
-- ansible.builtin.include_role: # create bashpipe
-    name: alex.debian13.bashpipe
+- name: Upload files
+  ansible.builtin.template:
+    src: "{{ item.source }}"
+    dest: "{{ item.target }}"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0777'
+  loop:
+    - source: nodered.yml.j2
+      target: "/{{ prop_basename }}/docker/nodered.yml"
+    - source: nodered.backup.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.backup.sh"
+    - source: nodered.restore.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.restore.sh"
+    - source: nodered.init.sh.j2
+      target: "/{{ prop_basename }}/scripts/nodered.init.sh"
+    - source: settings.js.j2
+      target: "/{{ prop_basename }}/nodered/defaults/settings.js"
+    - source: flows.json.j2
+      target: "/{{ prop_basename }}/nodered/defaults/flows.json"
+    # - source: .config.runtime.json.j2
+    #   target: "/{{ prop_basename }}/nodered/defaults/.config.runtime.json"
+    # - source: .config.users.json.j2
+    #   target: "/{{ prop_basename }}/nodered/defaults/.config.users.json"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
 
 - ansible.builtin.include_role: # docker compose
     name: alex.debian13.dockercompose
@@ -39,5 +62,83 @@
       - file: nodered/nodered.5.0.0-debian.custom.tar
     args_compose_file: "/{{ prop_basename }}/docker/nodered.yml"
 
+- name: wait for nodered to start
+  shell: |
+    {% raw %}
+    # until docker inspect --format "{{json .State.Health.Status }}" nodered-nodered-1 | grep -m 1 "healthy"
+    until docker inspect --format "{{json .State.Status }}" nodered-nodered-1 | grep -m 1 "running"
+    do
+      sleep 1
+    done
+    {% endraw %}
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
 
+- name: set config runtime
+  shell: |
+    import json
+    f=open('/alex/nodered/data/.config.runtime.json', 'r+')
+    j=json.load(f)
+    j["telemetryEnabled"]=False
+    f.seek(0)
+    json.dump(j,f,indent=4)
+    f.truncate()
+    f.close()
+  args:
+    executable: /alex/python/venv/bin/python3
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
+
+- name: set users runtime
+  shell: |
+    import json, os
+    if os.path.exists('/alex/nodered/data/.config.users.json'):
+      with open('/alex/nodered/data/.config.users.json', 'r') as f:
+        j=json.load(f)
+    else:
+      j = {}
+    with open('/alex/nodered/data/.config.users.json', 'w') as f:
+      if "_" not in j:
+        j["_"] = {}
+      if "editor" not in j["_"]:
+        j["_"]["editor"] = {}
+      if "tours" not in j["_"]["editor"]:
+        j["_"]["editor"]["tours"] = {}
+      j["_"]["editor"]["tours"]["welcome"]="1.0.0"
+
+      if "view" not in j["_"]["editor"]:
+        j["_"]["editor"]["view"] = {}
+      j["_"]["editor"]["view"]["view-show-welcome-tours"]=False
+
+      if "git" not in j["_"]:
+        j["_"]["git"] = {}
+      if "user" not in j["_"]["git"]:
+        j["_"]["git"]["user"] = {}
+      j["_"]["git"]["user"]["name"]="Alexander Witteveen"
+      j["_"]["git"]["user"]["email"]="alex.witteveen@live.nl"
+
+      json.dump(j,f,indent=4)
+  args:
+    executable: /alex/python/venv/bin/python3
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
+
+- name: compose restart
+  shell: |
+    docker compose -f "{{ args_compose_file }}" restart
+  args:
+    executable: /bin/bash
+  vars:
+    args_compose_file: "/{{ prop_basename }}/docker/nodered.yml"
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
 

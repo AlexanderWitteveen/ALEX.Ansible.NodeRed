@@ -1,6 +1,6 @@
 ---
 
-- name: "Playbook: Rebuild NodeRed VM"
+- name: "Playbook: Test"
   hosts: "{{ args_host }}"
   gather_facts: false
 
@@ -8,5 +8,13 @@
     - /etc/ansible/inventory/vars.yml
 
   tasks:
-    - ansible.builtin.include_role:
-        name: alex.nodered.uploadfiles
+    - name: test python
+      shell: |
+        print("Hello World")
+      args:
+        executable: /alex/python/venv/bin/python3
+      vars:
+        ansible_connection: "{{ prop_ansible_connection }}"
+        ansible_host: "{{ prop_host.ipaddress }}"
+      become: true
+

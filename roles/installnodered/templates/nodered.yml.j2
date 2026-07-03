@@ -21,6 +21,9 @@ services:
         source: /{{ prop_basename }}/nodered
         target: /{{ prop_basename }}/nodered
       - type: bind
+        source: /{{ prop_basename }}/cmdb
+        target: /{{ prop_basename }}/cmdb
+      - type: bind
         source: /{{ prop_basename }}/scripts
         target: /{{ prop_basename }}/scripts
       - type: bind
