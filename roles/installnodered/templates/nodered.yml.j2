@@ -27,6 +27,9 @@ services:
         source: /{{ prop_basename }}/scripts
         target: /{{ prop_basename }}/scripts
       - type: bind
+        source: /etc/ssl/certs
+        target: /etc/ssl/certs
+      - type: bind
         source: /mnt
         target: /mnt
     restart: unless-stopped
