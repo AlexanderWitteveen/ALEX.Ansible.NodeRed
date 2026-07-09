@@ -27,8 +27,8 @@ services:
         source: /{{ prop_basename }}/scripts
         target: /{{ prop_basename }}/scripts
       - type: bind
-        source: /etc/ssl/certs
-        target: /etc/ssl/certs
+        source: /etc/ssl/certs/ALEXCA.cer.pem
+        target: /etc/ssl/certs/ALEXCA.cer.pem
       - type: bind
         source: /mnt
         target: /mnt
