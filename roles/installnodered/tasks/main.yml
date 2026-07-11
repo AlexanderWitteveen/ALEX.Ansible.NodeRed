@@ -21,7 +21,7 @@
     args_datafolder_remote:
       - name: data
         service: nodered
-        mount: data-{{ prop_cmdb.environment }}
+        mount: data-prod
 
 - name: Upload files
   ansible.builtin.template:
