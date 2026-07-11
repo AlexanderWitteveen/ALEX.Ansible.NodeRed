@@ -19,52 +19,86 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 60,
+        "x": 660,
+        "y": 120,
         "wires": []
     },
     {
-        "id": "378394474e9f38f4",
-        "type": "file",
+        "id": "b057bb34e3f960a9",
+        "type": "comment",
         "z": "949671b2a2173441",
+        "name": "NodeRED axxxx 10.xx.xx.xx",
+        "info": "",
+        "x": 200,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "12acd13c102702fc",
+        "type": "exec",
+        "z": "949671b2a2173441",
+        "command": "/alex/scripts/nodered.backup.sh",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
         "name": "",
-        "filename": "/alexpipe",
-        "filenameType": "str",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "false",
-        "encoding": "none",
-        "x": 320,
-        "y": 60,
+        "x": 390,
+        "y": 120,
         "wires": [
+            [
+                "5ea86b8ecf11c117"
+            ],
+            [
+                "5ea86b8ecf11c117"
+            ],
             [
                 "5ea86b8ecf11c117"
             ]
         ]
     },
     {
-        "id": "1e7be573e003524e",
-        "type": "inject",
+        "id": "fa3b5ca0215d18d3",
+        "type": "cronplus",
         "z": "949671b2a2173441",
-        "name": "backup",
-        "props": [
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
             {
-                "p": "payload"
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 0 12 * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
             }
         ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "/alex/scripts/nodered.backup.sh",
-        "payloadType": "str",
-        "x": 130,
-        "y": 60,
+        "x": 120,
+        "y": 120,
         "wires": [
             [
-                "378394474e9f38f4"
+                "12acd13c102702fc"
             ]
         ]
+    },
+    {
+        "id": "5c6bca7b7d655b52",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-cron-plus": "2.2.4"
+        }
     }
 ]

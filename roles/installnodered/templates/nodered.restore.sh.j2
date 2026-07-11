@@ -8,6 +8,6 @@ if [ -n "$(ls -A /{{ prop_basename}}/nodered/data)" ]; then
 fi
 
 # Restore latest backup of Node-RED data directory
-if [ -n "$(ls -A /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup)" ]; then
-    ls -tr /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup | tail -n 1 | xargs -I {} unzip -o /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup/{} -d /
+if [ -n "$(ls -A /mnt/data-prod/nodered/{{ prop_host.hostname }}/backup)" ]; then
+    ls -tr /mnt/data-prod/nodered/{{ prop_host.hostname }}/backup | tail -n 1 | xargs -I {} unzip -o /mnt/data-prod/nodered/{{ prop_host.hostname }}/backup/{} -d /
 fi
