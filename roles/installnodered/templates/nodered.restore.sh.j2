@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mount -a
+
 # Remove current Node-RED data directory contents
 if [ -n "$(ls -A /{{ prop_basename}}/nodered/data)" ]; then
     rm -r -f /{{ prop_basename}}/nodered/data/*

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mount -a
+
 # Create backup of Node-RED data directory
 if [ -n "$(ls -A /{{ prop_basename}}/nodered/data)" ]; then
     zip -r /mnt/data-{{ prop_cmdb.environment }}/nodered/{{ prop_host.hostname }}/backup/nodered-backup-$(date +%Y%m%d%H%M%S).zip /{{ prop_basename}}/nodered/data/*
